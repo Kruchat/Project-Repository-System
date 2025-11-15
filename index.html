@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#ffffff">
 
-    <title>ระบบคลังโปรเจค (v3 - AI Chat UX)</title>
+    <title>ระบบคลังโปรเจค (v4 - Expert AI)</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -141,10 +141,10 @@
             .modal-backdrop { background-color: rgba(0, 0, 0, 0.4); }
         }
 
-        /* --- [ใหม่] Chat UX/UI Styles --- */
+        /* --- [อัปเกรด] Chat UX/UI Styles (v4) --- */
 
         #view-chat { 
-            display: none; /* [แก้ไข] เริ่มต้นด้วย none */
+            display: none; /* เริ่มต้นด้วย none */
             flex-direction: column; height: 100%; padding: 0; 
             background-color: #f1f5f9; 
         }
@@ -162,94 +162,113 @@
         }
         .chat-bubble-ai i { color: #8b5cf6; padding-top: 5px; }
         
-        /* [ใหม่] AI Rich Content Formatting */
+        /* AI Rich Content Formatting */
         .chat-bubble-ai .chat-content { display: flex; flex-direction: column; width: 100%; overflow: hidden; }
         .chat-bubble-ai .chat-content b { font-weight: 600; }
         .chat-bubble-ai .chat-content ul { list-style: disc; padding-left: 20px; margin-top: 8px; margin-bottom: 8px; }
         .chat-bubble-ai .chat-content li { margin-bottom: 4px; }
+        .chat-bubble-ai .chat-content p { margin-bottom: 8px; }
 
-        /* [ใหม่] AI Code Block */
+        /* AI Code Block */
         .chat-bubble-ai pre {
-            background-color: #1e293b; /* Dark background */
-            color: #e2e8f0;
-            border-radius: 12px;
-            padding: 12px;
-            margin-top: 8px;
-            margin-bottom: 4px;
-            font-size: 13px;
-            overflow-x: auto; /* Allow scrolling for wide code */
-            position: relative;
+            background-color: #1e293b; color: #e2e8f0; border-radius: 12px;
+            padding: 12px; margin-top: 8px; margin-bottom: 4px;
+            font-size: 13px; overflow-x: auto; position: relative;
         }
-        .chat-bubble-ai code {
-            font-family: monospace;
-            white-space: pre;
-        }
+        .chat-bubble-ai code { font-family: monospace; white-space: pre; }
         .code-copy-btn {
-            position: absolute;
-            top: 8px; right: 8px;
-            background-color: #334155;
-            color: #94a3b8;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            opacity: 0.7;
+            position: absolute; top: 8px; right: 8px; background-color: #334155;
+            color: #94a3b8; border: none; padding: 4px 8px; border-radius: 6px;
+            font-size: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s; opacity: 0.7;
         }
         .chat-bubble-ai pre:hover .code-copy-btn { opacity: 1; }
         .code-copy-btn:hover { background-color: #475569; color: white; }
         .code-copy-btn:active { transform: scale(0.95); }
 
-        /* [ใหม่] AI Error & Retry */
-        .chat-bubble-ai-error {
-            background-color: #fff1f2;
-            border-color: #fecaca;
-            color: #b91c1c;
-            align-items: flex-start;
-        }
+        /* AI Error & Retry */
+        .chat-bubble-ai-error { background-color: #fff1f2; border-color: #fecaca; color: #b91c1c; align-items: flex-start; }
         .chat-bubble-ai-error i { color: #dc2626; }
         .chat-retry-btn {
-            background-color: #dc2626;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 6px 12px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 10px;
-            cursor: pointer;
-            transition: background-color 0.2s;
+            background-color: #dc2626; color: white; border: none; border-radius: 8px;
+            padding: 6px 12px; font-size: 12px; font-weight: 600;
+            margin-top: 10px; cursor: pointer; transition: background-color 0.2s;
         }
         .chat-retry-btn:hover { background-color: #b91c1c; }
 
-
-        #chat-form-container {
+        /* [ใหม่ v4] Project Card & Proposal Card */
+        .project-card, .proposal-card {
             background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+        .project-card-content, .proposal-card-content {
+            padding: 12px 14px;
+        }
+        .project-card-title, .proposal-card-title {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 14px;
+            margin-bottom: 4px;
+            display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .project-card-desc, .proposal-card-desc {
+            font-size: 12px;
+            color: #475569;
+            margin-bottom: 8px;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .proposal-card-url {
+            font-size: 11px;
+            color: #64748b;
+            font-family: monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .project-card-actions, .proposal-card-actions {
+            display: flex;
+            gap: 8px;
             border-top: 1px solid #e2e8f0;
-            padding: 16px;
+            background-color: #f8fafc;
+            padding: 8px 14px;
+        }
+        .project-card-btn, .proposal-card-btn {
+            flex: 1; text-align: center; padding: 6px 10px; border-radius: 8px;
+            font-size: 12px; font-weight: 600; transition: all 0.2s; cursor: pointer;
+            border: 1px solid;
+        }
+        /* Project Card Buttons */
+        .project-card-btn-open { border-color: #cbd5e1; background-color: #fff; color: #334155; }
+        .project-card-btn-open:hover { background-color: #f1f5f9; }
+        .project-card-btn-edit { border-color: #cbd5e1; background-color: #fff; color: #334155; }
+        .project-card-btn-edit:hover { background-color: #f1f5f9; }
+        /* Proposal Card Button */
+        .proposal-card-btn-add {
+            border-color: #059669; background-color: #059669; color: white;
+            width: 100%;
+        }
+        .proposal-card-btn-add:hover { background-color: #047857; }
+
+        /* Chat Form */
+        #chat-form-container {
+            background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 16px;
             padding-bottom: calc(env(safe-area-inset-bottom, 0) + 16px);
         }
         #image-preview-container {
-            position: relative;
-            display: none; 
-            margin-bottom: 12px;
-            max-width: 100px; /* Smaller preview */
+            position: relative; display: none; margin-bottom: 12px; max-width: 100px;
         }
         #image-preview-container img {
-            width: 100px; height: 100px; object-fit: cover;
-            border-radius: 12px; border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            width: 100px; height: 100px; object-fit: cover; border-radius: 12px;
+            border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
         #remove-image-btn {
-            position: absolute; top: -10px; right: -10px;
-            width: 28px; height: 28px; border-radius: 99px;
+            position: absolute; top: -10px; right: -10px; width: 28px; height: 28px; border-radius: 99px;
             background-color: #334155; color: white; border: 2px solid white;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
-
         #chat-input-row { display: flex; gap: 10px; align-items: flex-end; }
         #chat-input { 
             flex: 1; background-color: white; border: 1px solid #cbd5e1; 
@@ -258,18 +277,17 @@
         }
         #chat-input:focus { outline: none; border-color: #8b5cf6; box-shadow: 0 0 0 3px #ddd6fe; }
         .chat-btn {
-            width: 48px; height: 48px; border-radius: 99px;
-            color: white; display: flex; align-items: center; justify-content: center;
+            width: 48px; height: 48px; border-radius: 99px; color: white;
+            display: flex; align-items: center; justify-content: center;
             flex-shrink: 0; transition: all 0.2s;
         }
         #attach-btn { background-color: #94a3b8; }
         #attach-btn:hover { background-color: #64748b; }
         
-        /* [ใหม่] Send/Stop Button Toggle */
+        /* Send/Stop Button Toggle */
         #chat-send-btn-container { position: relative; width: 48px; height: 48px; }
         #chat-send-btn, #chat-stop-btn {
-            position: absolute; top: 0; left: 0;
-            width: 48px; height: 48px; border-radius: 99px;
+            position: absolute; top: 0; left: 0; width: 48px; height: 48px; border-radius: 99px;
             color: white; display: flex; align-items: center; justify-content: center;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -291,36 +309,20 @@
         .typing-dot:nth-child(2) { animation-delay: 0.2s; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
-        /* [ใหม่] Suggested Prompts */
+        /* Suggested Prompts */
         #suggested-prompts-container {
             padding: 0 16px 16px 16px; /* Added to chat container */
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+            display: flex; flex-direction: column; gap: 8px;
             animation: fadeIn 0.5s ease-out;
         }
         .suggested-prompt {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 10px 14px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #475569;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px;
+            padding: 10px 14px; font-size: 13px; font-weight: 500;
+            color: #475569; cursor: pointer; transition: all 0.2s;
+            text-align: left; display: flex; align-items: center; gap: 8px;
         }
-        .suggested-prompt:hover {
-            background-color: #f8fafc;
-            border-color: #cbd5e1;
-        }
-        .suggested-prompt i {
-            color: #94a3b8;
-        }
+        .suggested-prompt:hover { background-color: #f8fafc; border-color: #cbd5e1; }
+        .suggested-prompt i { color: #94a3b8; }
         
     </style>
 </head>
@@ -395,10 +397,10 @@
     <main id="app-shell">
 
         <!-- Header -->
-        <header class="px-6 py-4 flex justify-between items-center sticky top-0 shadow-sm bg-white/80 z-40 backdrop-blur-md border-b border-slate-100/80">
+        <header class="px-6 py-4 flex justify-between items-center sticky top-0 shadow-sm bg-white/80 z-40 backdrop-filter: blur(12px) border-b border-slate-100/80">
             <div class="flex flex-col">
                 <h1 class="text-xl font-bold text-brand-600">Project Repo</h1>
-                <p id="header-subtitle" class="text-sm text-slate-500">v3 - AI Chat UX</p>
+                <p id="header-subtitle" class="text-sm text-slate-500">v4 - Expert AI</p>
             </div>
             <div id="header-icon-container" class="w-12 h-12 bg-sky-100 rounded-full flex items-center justify-center text-sky-600 border-4 border-white shadow-md">
                 <i id="header-icon" class="fa-solid fa-home text-xl"></i>
@@ -408,7 +410,7 @@
         <div id="content-area" class="flex-1 overflow-y-auto no-scrollbar pb-6">
             
             <!-- View 1: Home -->
-            <section id="view-home" class="p-6" style="display: none;"> <!-- [แก้ไข] style="display: none;" -->
+            <section id="view-home" class="p-6" style="display: none;">
                 <div class="bg-gradient-to-br from-brand-500 to-brand-600 text-white p-6 rounded-3xl shadow-xl shadow-sky-200 animate-scale-in mb-6">
                     <span class="text-sm font-light opacity-80" id="today-date">...</span>
                     <h2 class="text-2xl font-bold tracking-tight mt-1 mb-4">คลังโปรเจค AI</h2>
@@ -430,7 +432,7 @@
             </section>
 
             <!-- View 2: Project List -->
-            <section id="view-projects" class="p-6 space-y-4" style="display: none;"> <!-- [แก้ไข] style="display: none;" -->
+            <section id="view-projects" class="p-6 space-y-4" style="display: none;">
                 <div class="relative">
                     <input type="text" id="input-search" oninput="window.renderProjectList()" class="form-input pl-10" placeholder="ค้นหาโปรเจค...">
                     <i class="fa-solid fa-search text-slate-400 absolute top-1/2 left-3.5 -translate-y-1/2"></i>
@@ -441,8 +443,7 @@
             </section>
 
             <!-- View 3: Chat AI -->
-            <section id="view-chat" style="display: none;"> <!-- [แก้ไข] style="display: none;" -->
-                <!-- [ใหม่] Suggested Prompts จะถูกใส่ที่นี่โดย JS -->
+            <section id="view-chat" style="display: none;">
                 <div id="suggested-prompts-container"></div>
                 
                 <div id="chat-message-container" class="no-scrollbar">
@@ -459,7 +460,6 @@
                             </button>
                             <textarea id="chat-input" placeholder="พิมพ์คำสั่งหรือแนบรูปภาพ..." rows="1"></textarea>
                             
-                            <!-- [ใหม่] Send/Stop Button Container -->
                             <div id="chat-send-btn-container">
                                 <button id="chat-send-btn" type="submit" class="chat-btn">
                                     <i class="fa-solid fa-paper-plane"></i>
@@ -475,7 +475,7 @@
             </section>
 
             <!-- View 4: Settings -->
-            <section id="view-settings" class="p-6 space-y-6" style="display: none;"> <!-- [แก้ไข] style="display: none;" -->
+            <section id="view-settings" class="p-6 space-y-6" style="display: none;">
                 
                 <!-- Google Sheet Sync -->
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
@@ -554,20 +554,17 @@
                 <span>โปรเจค</span>
             </div>
             
-            <!-- Add Button -->
             <div class="flex items-center justify-center">
                  <button id="nav-add-btn" onclick="window.showProjectModal()">
                     <i class="fa-solid fa-plus text-lg"></i>
                 </button>
             </div>
            
-            <!-- Chat AI -->
             <div id="nav-chat" class="nav-item" onclick="window.switchView('view-chat')">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
                 <span>แชท AI</span>
             </div>
 
-            <!-- Settings -->
             <div id="nav-settings" class="nav-item" onclick="window.switchView('view-settings')">
                 <i class="fa-solid fa-sliders"></i>
                 <span>ตั้งค่า</span>
@@ -579,7 +576,6 @@
         // --- STATE & DOM ---
         let state = {
             projects: [],
-            // [ใหม่] Chat History
             chatHistory: [], 
             isAiThinking: false,
             attachedFile: { base64: null, mimeType: null, dataUrl: null },
@@ -587,7 +583,6 @@
             currentView: 'view-home'
         };
         
-        // [ใหม่] สำหรับ AbortController
         let currentAIController = null;
 
         const dom = {
@@ -607,10 +602,8 @@
             headerIconContainer: document.getElementById('header-icon-container'), 
             headerIcon: document.getElementById('header-icon'), 
             todayDate: document.getElementById('today-date'),
-            
             projectListContainer: document.getElementById('project-list-container'),
             inputSearch: document.getElementById('input-search'),
-            
             projectModalContainer: document.getElementById('project-modal-container'),
             modalTitle: document.getElementById('modal-title'),
             form: document.getElementById('project-form'),
@@ -620,22 +613,16 @@
             formUrl: document.getElementById('form-url'),
             formDescription: document.getElementById('form-description'),
             formDeleteBtn: document.getElementById('form-delete-btn'),
-            
             confirmModalContainer: document.getElementById('confirm-modal-container'),
-            
             toast: document.getElementById('toast'),
             toastIcon: document.getElementById('toast-icon'),
             toastMsg: document.getElementById('toast-msg'),
-
             importFileInput: document.getElementById('import-file-input'),
             inputProjectDataJson: document.getElementById('input-project-data-json'),
-            
             inputApiKey: document.getElementById('input-api-key'),
             inputAiModel: document.getElementById('input-ai-model'),
             apiKeyEye: document.getElementById('api-key-eye'),
             inputAppsScriptUrl: document.getElementById('input-apps-script-url'),
-            
-            // [ใหม่] Chat DOMs
             chatMessageContainer: document.getElementById('chat-message-container'),
             suggestedPromptsContainer: document.getElementById('suggested-prompts-container'),
             chatForm: document.getElementById('chat-form-container'), 
@@ -650,14 +637,12 @@
         // --- INITIALIZATION ---
         function initApp() {
             loadProjectsData();
-            loadChatHistory(); // [ใหม่]
+            loadChatHistory();
             loadApiKey();
             loadAiModel();
             loadAppsScriptUrl(); 
-            
             switchView('view-home'); 
             
-            // [ใหม่] Chat Listeners
             dom.chatInput.addEventListener('input', () => {
                 dom.chatInput.style.height = 'auto'; 
                 dom.chatInput.style.height = `${dom.chatInput.scrollHeight}px`;
@@ -669,49 +654,35 @@
                 }
             });
             document.getElementById('chat-form').addEventListener('submit', sendChatMessage);
-            dom.chatStopBtn.addEventListener('click', stopAIGeneration); // [ใหม่]
+            dom.chatStopBtn.addEventListener('click', stopAIGeneration);
         }
 
         // --- NAVIGATION & UTILS ---
         
-        /**
-         * [แก้ไข] เขียนฟังก์ชัน switchView ใหม่ทั้งหมด
-         * เพื่อแก้บั๊กการแสดงผลทับซ้อนของเมนู
-         */
         function switchView(id) {
             state.currentView = id;
 
-            // [FIX 1] ซ่อนทุก Views ทั้งหมดก่อน โดยตั้งค่า display: 'none'
             Object.values(dom.views).forEach(el => {
                 el.style.display = 'none';
             });
             
-            // ค้นหา viewId และ navId (เช่น 'home', 'projects')
             const viewId = id.split('-')[1]; 
 
-            // [FIX 2] แสดงผลเฉพาะ View ที่เลือก
             if (dom.views[viewId]) {
                 if (viewId === 'chat') {
-                    // หน้าแชทใช้ 'flex'
                     dom.views[viewId].style.display = 'flex'; 
                 } else {
-                    // หน้าอื่นใช้ 'block'
                     dom.views[viewId].style.display = 'block'; 
                 }
             }
             
-            // [FIX 3] จัดการ .active class ของ Nav
-            // ลบ active ออกจากทุกปุ่ม
             Object.values(dom.nav).forEach(el => el.classList.remove('active'));
-            // เพิ่ม active ให้ปุ่มที่ถูกคลิก
             if (dom.nav[viewId]) {
                 dom.nav[viewId].classList.add('active');
             }
             
-            // อัปเดต Header
             updateHeader(id);
             
-            // เรียกฟังก์ชัน render ของแต่ละหน้า
             switch(id) {
                 case 'view-home': renderHome(); break;
                 case 'view-projects': renderProjectList(); break;
@@ -732,7 +703,7 @@
                     iconClass = "fa-solid fa-list-check";
                     break;
                 case 'view-chat':
-                    subtitle = "ผู้ช่วย AI";
+                    subtitle = "ผู้ช่วย AI (v4)";
                     iconClass = "fa-solid fa-wand-magic-sparkles";
                     bgColor = "bg-violet-100";
                     textColor = "text-violet-600";
@@ -758,7 +729,6 @@
         }
 
         function getTodayString() {
-            // วันที่ของระบบ
             return new Date().toLocaleDateString('th-TH', { 
                 weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
             });
@@ -791,7 +761,6 @@
              const m = localStorage.getItem('project_repo_ai_model');
              dom.inputAiModel.value = m || 'gemini-2.5-flash-preview-09-2025';
         };
-        
         function saveAppsScriptUrl(v) { localStorage.setItem('project_repo_gas_url', v); };
         function loadAppsScriptUrl() {
             const url = localStorage.getItem('project_repo_gas_url');
@@ -1053,7 +1022,7 @@
             console.log("Auto-syncing to Google Sheet...");
 
             try {
-                const payload = JSON.stringify(state.projects); // [ดัดแปลง]
+                const payload = JSON.stringify(state.projects);
                 const response = await fetch(url, {
                     method: 'POST', mode: 'cors', 
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -1071,18 +1040,15 @@
             }
         }
 
-        // --- [ใหม่] AI CHAT FUNCTIONS ---
+        // --- [อัปเกรด v4] AI CHAT FUNCTIONS ---
 
-        // [ใหม่] Image Attachment
-        function triggerImageUpload() {
-            dom.imageUploadInput.click();
-        }
+        // Image Attachment
+        function triggerImageUpload() { dom.imageUploadInput.click(); }
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
             if (!['image/jpeg', 'image/png'].includes(file.type)) {
-                showToast('รองรับเฉพาะไฟล์ .jpg หรือ .png เท่านั้น', 'error');
-                return;
+                showToast('รองรับเฉพาะไฟล์ .jpg หรือ .png เท่านั้น', 'error'); return;
             }
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -1107,53 +1073,126 @@
             dom.imageUploadInput.value = null; 
         }
 
-        // [ใหม่] Chat Rendering
+        // Chat Rendering
         function renderChatHistory() {
-            dom.chatMessageContainer.innerHTML = state.chatHistory.map(msg => {
+            let html = '';
+            state.chatHistory.forEach(msg => {
                 if (msg.role === 'user') {
-                    return `<div class="chat-bubble chat-bubble-user">${escapeHTML(msg.text)}</div>`;
+                    html += `<div class="chat-bubble chat-bubble-user">${escapeHTML(msg.text)}</div>`;
                 } else {
                     // AI Message
                     const errorClass = msg.status === 'error' ? 'chat-bubble-ai-error' : '';
                     const icon = msg.status === 'error' ? 'fa-triangle-exclamation' : 'fa-robot';
                     
-                    // [ใหม่] Format AI message (HTML, Code blocks)
-                    const content = formatAIMessage(msg.text, msg.id, msg.status, msg.payload);
+                    // Format text (Code, HTML)
+                    const content = formatAIMessage(msg.text, msg.id, msg.status);
                     
-                    return `<div class="chat-bubble chat-bubble-ai ${errorClass}">
+                    // [ใหม่ v4] Build Card HTML
+                    let cardHtml = '';
+                    if (msg.data?.proposal) {
+                        cardHtml = buildProposalCard(msg.data.proposal);
+                    } else if (msg.data?.project_card) {
+                        cardHtml = buildProjectCard(msg.data.project_card);
+                    }
+                    
+                    html += `<div class="chat-bubble chat-bubble-ai ${errorClass}">
                                 <i class="fa-solid ${icon} fa-fw"></i>
-                                <div class="chat-content">${content}</div>
+                                <div class="chat-content">
+                                    ${content}
+                                    ${cardHtml}
+                                </div>
                             </div>`;
                 }
-            }).join('');
+            });
+            dom.chatMessageContainer.innerHTML = html;
             
             if (state.isAiThinking) {
                 addTypingIndicator();
             }
             
-            renderSuggestedPrompts(); // [ใหม่] Show/hide prompts
+            renderSuggestedPrompts();
             scrollToChatBottom();
         }
         
-        // [ใหม่] Format AI Message (Rich Content)
-        function formatAIMessage(rawText, msgId, status, payload) {
-            let html = rawText;
+        // [ใหม่ v4] Build Proposal Card
+        function buildProposalCard(proposal) {
+            // สตริง JSON ที่ถูก escape สำหรับ `onclick`
+            const proposalJson = escapeHTML(JSON.stringify(proposal));
+            return `
+                <div class="proposal-card">
+                    <div class="proposal-card-content">
+                        <p class="proposal-card-title">${escapeHTML(proposal.title)}</p>
+                        <p class="proposal-card-desc">${escapeHTML(proposal.description || "ไม่มีคำอธิบาย")}</p>
+                        <p class="proposal-card-url">${escapeHTML(proposal.url || "ไม่มี URL")}</p>
+                    </div>
+                    <div class="proposal-card-actions">
+                        <button class="proposal-card-btn proposal-card-btn-add" onclick="window.addProjectFromProposal('${proposalJson}')">
+                            <i class="fa-solid fa-plus mr-1"></i> เพิ่มลงคลัง
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
 
-            // 1. Handle Error Status
+        // [ใหม่ v4] Build Project Card
+        function buildProjectCard(cardData) {
+            const hasUrl = cardData.url && cardData.url.startsWith('http');
+            return `
+                <div class="project-card">
+                    <div class="project-card-content">
+                        <p class="project-card-title">${escapeHTML(cardData.title)}</p>
+                        <p class="project-card-desc">${escapeHTML(cardData.description || "ไม่มีคำอธิบาย")}</p>
+                    </div>
+                    <div class="project-card-actions">
+                        ${hasUrl ? `
+                        <a href="${escapeHTML(cardData.url)}" target="_blank" class="project-card-btn project-card-btn-open">
+                            <i class="fa-solid fa-external-link-alt mr-1"></i> เปิดลิงก์
+                        </a>` : ''}
+                        <button class="project-card-btn project-card-btn-edit" onclick="window.showProjectModal('${escapeHTML(cardData.id)}')">
+                            <i class="fa-solid fa-pencil mr-1"></i> แก้ไข
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // [ใหม่ v4] Add Project from Proposal
+        function addProjectFromProposal(proposalJson) {
+            try {
+                const proposal = JSON.parse(proposalJson);
+                
+                const newProject = {
+                    id: `p${Date.now()}`,
+                    title: proposal.title || "ไม่มีชื่อ",
+                    category: proposal.category || "AI Added",
+                    url: proposal.url || "",
+                    description: proposal.description || ""
+                };
+
+                state.projects.push(newProject);
+                sortProjects();
+                saveProjectsToStorage();
+                renderProjectList();
+                triggerAutoSync();
+                
+                showToast(`เพิ่ม '${newProject.title}' สำเร็จ`);
+            } catch (e) {
+                console.error("Failed to add from proposal", e);
+                showToast('ไม่สามารถเพิ่มโปรเจคได้', 'error');
+            }
+        }
+        
+        function formatAIMessage(rawText, msgId, status) {
+            let html = rawText;
             if (status === 'error') {
-                html = `<p class="font-semibold">เกิดข้อผิดพลาด</p>
+                return `<p class="font-semibold">เกิดข้อผิดพลาด</p>
                         <p class="text-xs">${escapeHTML(rawText)}</p>
                         <button class="chat-retry-btn" onclick="window.retryAITask('${msgId}')">
                             <i class="fa-solid fa-rotate-right mr-1"></i> ลองใหม่
                         </button>`;
-                // Store payload in the button if needed (but it's stored in state)
-                return html;
             }
-
-            // 2. Format Code Blocks ( ``` )
             html = html.replace(/```(.*?)\n([\s\S]*?)```/gs, (match, lang, code) => {
                 const escapedCode = escapeHTML(code);
-                const langTag = lang ? `<span class="text-xs text-slate-400">${lang.trim()}</span>` : '';
                 return `<pre>
                             <button class="code-copy-btn" onclick="window.copyCode(this)">
                                 <i class="fa-solid fa-copy"></i> คัดลอก
@@ -1161,18 +1200,13 @@
                             <code>${escapedCode}</code>
                         </pre>`;
             });
-
-            // 3. AI is expected to send <b>, <ul>, <li> tags (from system prompt)
-            // We are NOT escaping the HTML, so they render automatically.
+            // AI ถูกสั่งให้ส่ง HTML (<b>, <ul>, <li>) มาเลย จึงไม่ escape
             return html;
         }
         
-        // [ใหม่] Copy Code Function
         window.copyCode = (buttonEl) => {
             const pre = buttonEl.closest('pre');
             const code = pre.querySelector('code').innerText;
-            
-            // Use fallback for clipboard
             const textArea = document.createElement("textarea");
             textArea.value = code;
             document.body.appendChild(textArea);
@@ -1183,26 +1217,21 @@
                 setTimeout(() => {
                     buttonEl.innerHTML = '<i class="fa-solid fa-copy"></i> คัดลอก';
                 }, 2000);
-            } catch (err) {
-                showToast('ไม่สามารถคัดลอกได้', 'error');
-            }
+            } catch (err) { showToast('ไม่สามารถคัดลอกได้', 'error'); }
             document.body.removeChild(textArea);
         };
         
-        // [ใหม่] Suggested Prompts
         function renderSuggestedPrompts() {
             if (state.chatHistory.length > 0 || state.isAiThinking) {
                 dom.suggestedPromptsContainer.innerHTML = '';
                 return;
             }
-            
             const prompts = [
-                { icon: "fa-plus", text: "เพิ่มโปรเจคใหม่ให้หน่อย" },
+                { icon: "fa-plus", text: "เพิ่มเว็บ 'ศูนย์การศึกษาพิเศษ กาฬสินธุ์'" },
                 { icon: "fa-list-check", text: "สรุปโปรเจคทั้งหมดที่มี" },
-                { icon: "fa-search", text: "ค้นหาโปรเจคเกี่ยวกับ 'Tools'" },
+                { icon: "fa-search", text: "ขอดูโปรเจค 'ระบบตารางเวรครู AI'" },
                 { icon: "fa-file-code", text: "ขอโค้ด Apps Script สำหรับ Sync" }
             ];
-
             dom.suggestedPromptsContainer.innerHTML = prompts.map(p => `
                 <button class="suggested-prompt" onclick="window.runSuggestedPrompt('${p.text}')">
                     <i class="fa-solid ${p.icon} fa-fw"></i>
@@ -1216,7 +1245,6 @@
             document.getElementById('chat-form').dispatchEvent(new Event('submit', { cancelable: true }));
         };
 
-        // [ใหม่] Typing Indicator
         function addTypingIndicator() {
             if (document.getElementById('ai-typing-indicator')) return; 
             const bubble = document.createElement('div');
@@ -1230,25 +1258,19 @@
             const indicator = document.getElementById('ai-typing-indicator');
             if (indicator) indicator.remove();
         }
-        
         function scrollToChatBottom() {
             dom.chatMessageContainer.scrollTop = dom.chatMessageContainer.scrollHeight;
         }
 
-        // [ใหม่] Toggle Send/Stop buttons
         function toggleChatControls(isThinking) {
             state.isAiThinking = isThinking;
-            
             dom.chatSendBtn.classList.toggle('hidden', isThinking);
             dom.chatStopBtn.classList.toggle('active', isThinking);
-            
             dom.chatInput.disabled = isThinking; 
             dom.attachBtn.disabled = isThinking; 
-            
-            renderSuggestedPrompts(); // Hide prompts when thinking
+            renderSuggestedPrompts();
         }
         
-        // [ใหม่] Stop AI Generation
         function stopAIGeneration() {
             if (currentAIController) {
                 currentAIController.abort();
@@ -1258,7 +1280,6 @@
             removeTypingIndicator();
         }
 
-        // [ใหม่] Core AI Chat Logic (Refactored for Retry)
         async function sendChatMessage(event) {
             event.preventDefault();
             if (state.isAiThinking) return; 
@@ -1273,41 +1294,33 @@
             }
 
             toggleChatControls(true);
-            
             dom.chatInput.value = '';
             dom.chatInput.style.height = 'auto'; 
             
             const messageId = 'msg-' + Date.now();
-            const messagePayload = createAIPayload(userMessage); // [ใหม่] Helper
+            const messagePayload = createAIPayload(userMessage);
             
             addMessageToChat('user', userMessage || "(วิเคราะห์รูปภาพ)", { id: messageId }); 
             addTypingIndicator(); 
             
-            // Execute the fetch
             await executeAIFetch(messagePayload, messageId);
         }
         
-        // [ใหม่] Retry Logic
         window.retryAITask = async (errorMsgId) => {
             const errorMsg = state.chatHistory.find(m => m.id === errorMsgId);
             if (!errorMsg || !errorMsg.payload) {
-                showToast('ไม่พบข้อมูลสำหรับ Retry', 'error');
-                return;
+                showToast('ไม่พบข้อมูลสำหรับ Retry', 'error'); return;
             }
-            
             const payloadToRetry = errorMsg.payload;
-            
-            // Remove the error message
             state.chatHistory = state.chatHistory.filter(m => m.id !== errorMsgId);
             
             toggleChatControls(true);
-            renderChatHistory(); // Re-render without the error
+            renderChatHistory();
             addTypingIndicator();
             
-            await executeAIFetch(payloadToRetry, errorMsgId); // Reuse the original ID
+            await executeAIFetch(payloadToRetry, errorMsgId);
         };
         
-        // [ใหม่] Reusable Fetch Execution
         async function executeAIFetch(payload, messageId) {
             currentAIController = new AbortController();
             const model = dom.inputAiModel.value;
@@ -1319,7 +1332,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
-                    signal: currentAIController.signal // [ใหม่] Abort Signal
+                    signal: currentAIController.signal
                 });
 
                 if (!response.ok) {
@@ -1340,51 +1353,73 @@
 
             } catch (error) {
                 if (error.name === 'AbortError') {
-                    console.log("Fetch aborted");
-                    return; // Stopped by user, not an error
+                    console.log("Fetch aborted"); return;
                 }
-                
                 console.error("AI Generation Error:", error);
                 removeTypingIndicator(); 
                 toggleChatControls(false);
                 
-                // [ใหม่] Add error message with payload for retry
                 const errorId = 'err-' + messageId;
                 addMessageToChat('ai', error.message, {
                     id: errorId,
                     status: 'error',
-                    payload: payload // Store the failed payload
+                    payload: payload
                 });
             } finally {
                 if (state.attachedFile.base64) {
-                    removeImagePreview(); // Clear image after sending
+                    removeImagePreview();
                 }
             }
         }
         
-        // [ใหม่] Payload Creation Helper
+        // [อัปเกรด v4] Payload Creation Helper
         function createAIPayload(userMessage) {
             const today = new Date().toLocaleDateString('sv-SE');
             
-            // [ใหม่] System Prompt (Rich Content)
             const systemPrompt = `
-คุณคือ 'AI ผู้ช่วยคลังโปรเจค' (v3)
-หน้าที่ของคุณคือจัดการคลังโปรเจค (JSON) และตอบคำถามทั่วไป
+คุณคือ 'AI ผู้ช่วยคลังโปรเจค' (v4 - Expert Edition)
+คุณสามารถสวมบทบาทเป็นผู้เชี่ยวชาญเฉพาะด้านได้ (เช่น 'Expert Coder', 'Expert Researcher') เมื่อผู้ใช้ร้องขอ
+หน้าที่ของคุณคือจัดการคลังโปรเจค (JSON) และตอบคำถามทั่วไปโดยใช้ Google Search
 
-กฎการทำงาน:
+กฎการทำงาน (สำคัญมาก):
+
 1.  **ตระหนักรู้ข้อมูล:**
     * วันนี้คือ: ${today}
     * ข้อมูลโปรเจคปัจจุบัน: ${JSON.stringify(state.projects)}
-2.  **สั่งการ (Mutate):** หากผู้ใช้ "เพิ่ม", "ลบ", "แก้ไข" โปรเจค คุณต้องตอบกลับเป็น **JSON Array (ข้อมูลโปรเจคใหม่)** ที่สมบูรณ์เท่านั้น
-    * ห้ามมีข้อความอื่น ห้ามมี markdown (เช่น \`\`\`json)
-    * 'id' ต้องเป็น String (เช่น 'p12345')
-3.  **ตอบคำถาม (Query):** หากผู้ใช้ "ถาม" หรือ "ค้นหา"
-    * คุณต้องตอบกลับเป็น **JSON Object ที่มี key "answer"**
-    * Ex: { "answer": "ฉันพบ 3 โปรเจคที่ตรงกัน..." }
-4.  **การจัดรูปแบบ (Rich Content):**
-    * ใน "answer" คุณสามารถใช้ HTML Tags ต่อไปนี้ได้: <b>, <ul>, <li>
-    * เมื่อต้องการแสดงโค้ด ให้ใช้ \`\`\`(language)\n(code)\n\`\`\`
-5.  **ค้นหา:** หากผู้ใช้ถามคำถามทั่วไป (เช่น "วิธีทำ...", "โค้ด Apps Script") ให้ใช้ Google Search
+
+2.  **การตอบสนอง (Response Formats):** คุณต้องตอบกลับเป็น JSON Object หนึ่งใน 3 รูปแบบนี้เท่านั้น
+
+    A) **เมื่อ สั่งการ (Mutate Data):**
+       * หากผู้ใช้สั่ง "ลบ", "แก้ไข" หรือ "เพิ่ม" (โดยระบุข้อมูลเอง)
+       * **Format:** \`[ ... (ข้อมูลโปรเจคใหม่ที่เป็น Array) ... ]\`
+       * **หมายเหตุ:** ห้ามมีข้อความอื่น ห้ามมี \`\`\`json
+
+    B) **เมื่อ ตอบคำถาม (Query) หรือ ค้นหา (Search):**
+       * สำหรับคำถามทั่วไป, ค้นหา, หรือแสดงข้อมูลโปรเจค
+       * **Format:** \`{ "answer": "..." }\`
+       * **การจัดรูปแบบ:** ใน "answer" คุณสามารถใช้ HTML Tags (<b>, <ul>, <li>) และ Code Blocks (\`\`\`) ได้
+
+    C) **เมื่อ เสนอ (Propose) หรือ แสดงการ์ด (Card):**
+       * **Format:** \`{ "answer": "...", "proposal": { ... } }\`
+       * **Format:** \`{ "answer": "...", "project_card": { ... } }\`
+
+3.  **Workflows (วิธีการทำงาน):**
+
+    * **Workflow 1: เพิ่มเว็บจากเน็ต (เช่น "เพิ่มเว็บศูนย์การศึกษาพิเศษกาฬสินธุ์")**
+        1.  ห้ามใช้ Format (A)
+        2.  ใช้ Google Search ค้นหา "ศูนย์การศึกษาพิเศษกาฬสินธุ์" เพื่อหา title, url, description
+        3.  ตอบกลับโดยใช้ Format (C)
+            \`{ "answer": "ฉันค้นหาข้อมูลมาให้แล้ว นี่คือข้อมูลที่พบค่ะ:", "proposal": { "title": "ศูนย์การศึกษาพิเศษ ประจำจังหวัดกาฬสินธุ์", "url": "https://kalasin.specialedu.go.th/", "description": "เว็บไซต์ศูนย์การศึกษาพิเศษ..." } }\`
+
+    * **Workflow 2: ขอดูโปรเจค (เช่น "ขอดูโปรเจคตารางเวร")**
+        1.  ค้นหา "ระบบตารางเวรครู AI" จาก \`state.projects\`
+        2.  ตอบกลับโดยใช้ Format (C)
+            \`{ "answer": "นี่คือโปรเจคที่ฉันพบค่ะ:", "project_card": { "id": "p1", "title": "ระบบตารางเวรครู AI", "url": "https://example.com", "description": "แอปสำหรับจัดตารางเวรด้วย AI" } }\`
+
+    * **Workflow 3: คำถามทั่วไป (เช่น "โค้ด Apps Script")**
+        1.  ใช้ Google Search ค้นหา
+        2.  ตอบกลับโดยใช้ Format (B) พร้อม Code Block (\`\`\`)
+            \`{ "answer": "นี่คือโค้ด Apps Script สำหรับ Sync ที่ฉันพบค่ะ: \`\`\`javascript\nfunction ...\n\`\`\`" }\`
 `;
             
             const userQuery = `คำสั่งจากผู้ใช้: "${userMessage}"`;
@@ -1406,14 +1441,15 @@
             };
         }
 
-        // [ใหม่] Add Message to Chat (with options)
+        // [อัปเกรด v4] Add Message to Chat
         function addMessageToChat(role, text, options = {}) {
             const msg = {
                 role: role,
                 text: text,
                 id: options.id || 'msg-' + Date.now() + Math.random(),
                 status: options.status || 'ok',
-                payload: options.payload || null // For retry
+                payload: options.payload || null, // For retry
+                data: options.data || null // [ใหม่ v4] For cards
             };
             
             state.chatHistory.push(msg);
@@ -1421,12 +1457,13 @@
             renderChatHistory(); 
         }
 
+        // [อัปเกรด v4] Process AI Response
         function processAIResponse(jsonString) {
             try {
                 const cleanJsonString = jsonString.replace(/```json/g, '').replace(/```/g, '').trim();
                 const aiData = JSON.parse(cleanJsonString);
                 
-                if (Array.isArray(aiData)) { // 2. สั่งการ (Mutate)
+                if (Array.isArray(aiData)) { // Format A (Mutate)
                     const oldLength = state.projects.length;
                     const newLength = aiData.length;
                     state.projects = aiData; 
@@ -1443,15 +1480,22 @@
                         summaryMsg = "ฉันอัปเดตข้อมูลโปรเจคให้แล้วค่ะ";
                     }
 
-                    addMessageToChat('ai', summaryMsg); // ตอบกลับแบบปกติ
+                    addMessageToChat('ai', summaryMsg);
                     showToast(summaryMsg, 'success');
-                    
                     renderProjectList();
-                    triggerAutoSync(); // Auto-sync
+                    triggerAutoSync();
 
-                } else if (typeof aiData === 'object' && aiData !== null && aiData.answer) { // 3. ตอบคำถาม (Query)
+                } else if (typeof aiData === 'object' && aiData !== null && aiData.answer) { // Format B or C (Query/Propose/Card)
                     const answer = aiData.answer;
-                    addMessageToChat('ai', answer);
+                    const proposal = aiData.proposal || null;
+                    const projectCard = aiData.project_card || null;
+                    
+                    addMessageToChat('ai', answer, { 
+                        data: { 
+                            proposal: proposal, 
+                            project_card: projectCard 
+                        } 
+                    });
                     
                 } else {
                     throw new Error("AI response is not a valid Array or Answer Object.");
@@ -1459,7 +1503,6 @@
             } catch (error) {
                 console.error("AI Response Parse Error:", error);
                 const errorMsg = `AI Error: ${error.message} (AI ตอบกลับ: ${jsonString})`;
-                // Add as a simple text message, not an error state
                 addMessageToChat('ai', errorMsg);
                 showToast('AI ตอบกลับในรูปแบบที่ผิดพลาด', 'error');
             }
@@ -1486,9 +1529,10 @@
         window.triggerImageUpload = triggerImageUpload;
         window.handleImageUpload = handleImageUpload;
         window.removeImagePreview = removeImagePreview;
-        window.runSuggestedPrompt = runSuggestedPrompt; // [ใหม่]
-        window.copyCode = copyCode; // [ใหม่]
-        window.retryAITask = retryAITask; // [ใหม่]
+        window.runSuggestedPrompt = runSuggestedPrompt;
+        window.copyCode = copyCode;
+        window.retryAITask = retryAITask;
+        window.addProjectFromProposal = addProjectFromProposal; // [ใหม่ v4]
 
         // --- Start App ---
         initApp();
