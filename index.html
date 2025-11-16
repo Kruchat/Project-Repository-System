@@ -324,6 +324,12 @@
         .suggested-prompt:hover { background-color: #f8fafc; border-color: #cbd5e1; }
         .suggested-prompt i { color: #94a3b8; }
         
+        /* [ใหม่] Styles for instructions */
+        .instructions-box { background-color: #f1f5f9; border-radius: 8px; padding: 12px; font-size: 13px; color: #475569; }
+        .instructions-box code { background-color: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+        .instructions-box ol { list-style: decimal; padding-left: 20px; margin-top: 8px; }
+        .instructions-box summary { font-weight: 600; cursor: pointer; }
+        
     </style>
 </head>
 <body>
@@ -491,6 +497,82 @@
                         <i class="fa-solid fa-circle-info mr-1 text-green-600"></i>
                         ระบบจะ Sync อัตโนมัติเมื่อมีการเปลี่ยนแปลงข้อมูล
                     </p>
+
+                    <!-- [เพิ่ม] กล่องคำแนะนำที่ขาดหายไป -->
+                    <details class="mt-4">
+                        <summary class="instructions-box summary">
+                            <i class="fa-solid fa-info-circle"></i> วิธีรับ URL (คลิกเพื่ออ่าน)
+                        </summary>
+                        <div class="instructions-box mt-2 space-y-2">
+                            <ol class="space-y-1 list-decimal list-inside">
+                                <li>ไปที่ <code>sheets.new</code> &gt; <code>ส่วนขยาย &gt; Apps Script</code></li>
+                                <li>วางโค้ด (v2) จากช่องถัดไป</li>
+                                <li><code>Deploy &gt; New deployment &gt; Web app</code></li>
+                                <li>ตั้งค่า "Who has access" เป็น <code>Anyone</code></li>
+                                <li>กด Deploy, อนุญาตสิทธิ์, และคัดลอก URL มาวาง</li>
+                            </ol>
+                        </div>
+                    </details>
+                    <details class="mt-2">
+                         <summary class="instructions-box summary">
+                            <i class="fa-solid fa-code"></i> โค้ดสำหรับ Apps Script (Code.gs) (v2)
+                        </summary>
+                        <div class="instructions-box mt-2">
+                            <!-- [แก้ไข] อัปเดต Code.gs เป็น v2 (Dynamic) -->
+                            <pre class="overflow-x-auto p-2 bg-slate-700 text-white rounded-md text-xs"><code>function doPost(e) {
+  try {
+    var sheetName = "ProjectData"; // ตั้งชื่อ Sheet ที่ต้องการ
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName(sheetName);
+    if (!sheet) {
+      sheet = ss.insertSheet(sheetName);
+    }
+    
+    var data = JSON.parse(e.postData.contents);
+    
+    if (data.length === 0) {
+      // กรณีส่งข้อมูลว่างมา (เช่น ลบหมด)
+      sheet.clearContents();
+      sheet.getRange(1, 1).setValue("No data synced.");
+      return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "Data was empty, sheet cleared." })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // --- Dynamic Part (รองรับอนาคต) ---
+    // 1. ดึง Headers อัตโนมัติจาก Key ของ Object แรก
+    var headers = Object.keys(data[0]);
+    
+    // 2. แปลง Array of Objects เป็น 2D Array
+    var values = data.map(function(row) {
+      return headers.map(function(header) {
+        return row[header] !== undefined ? row[header] : "";
+      });
+    });
+    // --- End Dynamic Part ---
+
+    // 3. ล้างข้อมูลเก่า (เฉพาะเนื้อหา)
+    sheet.clearContents();
+    
+    // 4. เขียน Headers (แถวแรก)
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight("bold");
+    
+    // 5. เขียนข้อมูล (ตั้งแต่แถว 2)
+    if (values.length > 0) {
+      sheet.getRange(2, 1, values.length, headers.length).setValues(values);
+      sheet.autoResizeColumns(1, headers.length);
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify({ status: "success", rows_synced: values.length, sheetName: sheetName })).setMimeType(ContentService.MimeType.JSON);
+  
+  } catch (error) {
+    Logger.log(error.toString());
+    Logger.log(e.postData.contents); // Log ข้อมูลที่ทำให้เกิด Error
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", message: error.message })).setMimeType(ContentService.MimeType.JSON);
+  }
+}</code></pre>
+                        </div>
+                    </details>
+                    <!-- [จบส่วนที่เพิ่ม] -->
+
                 </div>
                 
                 <!-- Import/Export -->
