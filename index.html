@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#ffffff">
 
-    <title>ระบบคลังโปรเจค (v4 - Expert AI)</title>
+    <title>ระบบคลังโปรเจค (v5 - Smart URL Detect)</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -406,7 +406,7 @@
         <header class="px-6 py-4 flex justify-between items-center sticky top-0 shadow-sm bg-white/80 z-40 backdrop-filter: blur(12px) border-b border-slate-100/80">
             <div class="flex flex-col">
                 <h1 class="text-xl font-bold text-brand-600">Project Repo</h1>
-                <p id="header-subtitle" class="text-sm text-slate-500">v4 - Expert AI</p>
+                <p id="header-subtitle" class="text-sm text-slate-500">v5 - Smart URL Detect</p>
             </div>
             <div id="header-icon-container" class="w-12 h-12 bg-sky-100 rounded-full flex items-center justify-center text-sky-600 border-4 border-white shadow-md">
                 <i id="header-icon" class="fa-solid fa-home text-xl"></i>
@@ -723,7 +723,6 @@
             loadApiKey();
             loadAiModel();
             loadAppsScriptUrl(); 
-            switchView('view-home'); 
             
             dom.chatInput.addEventListener('input', () => {
                 dom.chatInput.style.height = 'auto'; 
@@ -737,6 +736,9 @@
             });
             document.getElementById('chat-form').addEventListener('submit', sendChatMessage);
             dom.chatStopBtn.addEventListener('click', stopAIGeneration);
+            
+            // เริ่มต้นที่ 'view-home' (แก้ไขบั๊ก)
+            switchView('view-home'); 
         }
 
         // --- NAVIGATION & UTILS ---
@@ -748,19 +750,20 @@
                 el.style.display = 'none';
             });
             
-            const viewId = id.split('-')[1]; 
+            // ตรวจสอบว่า id อยู่ใน dom.views หรือไม่ (เช่น 'view-home' -> 'home')
+            const viewKey = id.split('-')[1]; // 'view-home' -> 'home'
 
-            if (dom.views[viewId]) {
-                if (viewId === 'chat') {
-                    dom.views[viewId].style.display = 'flex'; 
+            if (dom.views[viewKey]) {
+                if (viewKey === 'chat') {
+                    dom.views[viewKey].style.display = 'flex'; // Chat ใช้ flex
                 } else {
-                    dom.views[viewId].style.display = 'block'; 
+                    dom.views[viewKey].style.display = 'block'; // หน้าอื่นใช้ block
                 }
             }
             
             Object.values(dom.nav).forEach(el => el.classList.remove('active'));
-            if (dom.nav[viewId]) {
-                dom.nav[viewId].classList.add('active');
+            if (dom.nav[viewKey]) { // 'home', 'projects', 'chat', 'settings'
+                dom.nav[viewKey].classList.add('active');
             }
             
             updateHeader(id);
@@ -785,7 +788,7 @@
                     iconClass = "fa-solid fa-list-check";
                     break;
                 case 'view-chat':
-                    subtitle = "ผู้ช่วย AI (v4)";
+                    subtitle = "ผู้ช่วย AI (v5)";
                     iconClass = "fa-solid fa-wand-magic-sparkles";
                     bgColor = "bg-violet-100";
                     textColor = "text-violet-600";
@@ -1454,12 +1457,12 @@
             }
         }
         
-        // [อัปเกรด v4] Payload Creation Helper
+        // [อัปเกรด v5] Payload Creation Helper (Smart URL Detect)
         function createAIPayload(userMessage) {
             const today = new Date().toLocaleDateString('sv-SE');
             
             const systemPrompt = `
-คุณคือ 'AI ผู้ช่วยคลังโปรเจค' (v4 - Expert Edition)
+คุณคือ 'AI ผู้ช่วยคลังโปรเจค' (v5 - Expert Edition)
 คุณสามารถสวมบทบาทเป็นผู้เชี่ยวชาญเฉพาะด้านได้ (เช่น 'Expert Coder', 'Expert Researcher') เมื่อผู้ใช้ร้องขอ
 หน้าที่ของคุณคือจัดการคลังโปรเจค (JSON) และตอบคำถามทั่วไปโดยใช้ Google Search
 
@@ -1492,6 +1495,13 @@
         2.  ใช้ Google Search ค้นหา "ศูนย์การศึกษาพิเศษกาฬสินธุ์" เพื่อหา title, url, description
         3.  ตอบกลับโดยใช้ Format (C)
             \`{ "answer": "ฉันค้นหาข้อมูลมาให้แล้ว นี่คือข้อมูลที่พบค่ะ:", "proposal": { "title": "ศูนย์การศึกษาพิเศษ ประจำจังหวัดกาฬสินธุ์", "url": "https://kalasin.specialedu.go.th/", "description": "เว็บไซต์ศูนย์การศึกษาพิเศษ..." } }\`
+
+    * **[ใหม่ v5] Workflow 1.5: เพิ่มเว็บจาก URL (เช่น "https://kruchat.github.io/...")**
+        1.  **ถ้าคำสั่งของผู้ใช้ "เป็นเพียง URL" (เช่น เริ่มต้นด้วย 'http' หรือ 'www')**
+        2.  ให้ทำงานเหมือน Workflow 1 ทันที
+        3.  ใช้ Google Search ค้นหา URL นั้นเพื่อหา title และ description (ถ้ามี)
+        4.  ตอบกลับโดยใช้ Format (C) เสมอ
+            \`{ "answer": "ฉันตรวจสอบ URL ที่คุณส่งมาให้แล้วค่ะ:", "proposal": { "title": "ระบบคำนวณอายุราชการ", "url": "https://kruchat.github.io/...", "description": "เครื่องมือคำนวณอายุราชการ..." } }\`
 
     * **Workflow 2: ขอดูโปรเจค (เช่น "ขอดูโปรเจคตารางเวร")**
         1.  ค้นหา "ระบบตารางเวรครู AI" จาก \`state.projects\`
